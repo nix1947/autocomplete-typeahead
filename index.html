@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Hello world</title>
+    <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+
+  <script src="./bloodhound.min.js" charset="utf-8"></script>
+  <script src="./typeahead.jquery.min.js" charset="utf-8"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <link rel="stylesheet" href="./typeahead.css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+
+
+    <div id="custom-templates">
+      <input class="typeahead form-control" type="text" placeholder="Oscar winners for Best Picture">
+    </div>
+
+  <script>
+
+  var bestPictures = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  // prefetch: './post_1960.json',
+  remote: {
+    url: './post_1960.json',
+    wildcard: '%QUERY'
+  }
+});
+
+
+
+  $('#custom-templates .typeahead').typeahead(null, {
+    name: 'best-pictures',
+    display: 'value',
+    source: bestPictures,
+    templates: {
+                     empty: [
+                         '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
+                     ],
+                     header: [
+                         '<div class="list-group search-results-dropdown">'
+                     ],
+                     suggestion: function (data) {
+                         return '<div href="' + data.year + '" class="list-group-item">' + data.year + ' - @' + data.value + '</div>'
+                       }
+                     }
+
+  });
+  </script>
+
+  </body>
+</html>
